@@ -14,4 +14,4 @@ export { default as Email } from "./Email";
 export { default as SingleAd } from "./SingleAd";
 export { default as UserContacts } from "./UserContacts";
 export { default as Quotations } from "./Quotations";
-
+export { default as CreateAd } from "./CreateAd";

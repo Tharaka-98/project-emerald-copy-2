@@ -17,7 +17,8 @@ import {
   Email,
   SingleAd,
   UserContacts,
-  Quotations
+  Quotations,
+  CreateAd
 } from "./pages";
 
 import { loader as landingLoader } from "./pages/Landing";
@@ -104,6 +105,10 @@ const router = createBrowserRouter([
         path: "quotations",
         element: <Quotations />,
         loader: quotasLoader,
+      },
+      {
+        path: "advertisement/createAd",
+        element: <CreateAd />,
       }
     ],
   },

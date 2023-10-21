@@ -1,6 +1,7 @@
 import React from 'react'
 import { AdMailTable } from '../components'
 import { details } from '../ad.data'
+import CreateAd from './CreateAd'
 
 
 export const loader = () => {

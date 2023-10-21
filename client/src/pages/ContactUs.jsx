@@ -1,23 +1,15 @@
-import React from "react";
+import React, { useState } from "react";
+import axios from "axios"; // Import Axios or your preferred HTTP library
 
 function ContactUs() {
-  const ContactTextArea = ({ row, placeholder, name, defaultValue }) => {
-    return (
-      <>
-        <div className="mb-6">
-          <textarea
-            rows={row}
-            placeholder={placeholder}
-            name={name}
-            className="border-[f0f0f0] w-full resize-none rounded border py-3 px-[14px] text-base text-body-color outline-none focus:border-primary focus-visible:shadow-none"
-            defaultValue={defaultValue}
-          />
-        </div>
-      </>
-    );
-  };
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    phone: "",
+    message: "",
+  });
 
-  const ContactInputBox = ({ type, placeholder, name }) => {
+  const ContactInputBox = ({ type, placeholder, name, value, onChange }) => {
     return (
       <>
         <div className="mb-6">
@@ -25,12 +17,67 @@ function ContactUs() {
             type={type}
             placeholder={placeholder}
             name={name}
+            value={value}
+            onChange={onChange}
             className="border-[f0f0f0] w-full rounded border py-3 px-[14px] text-base text-body-color outline-none focus:border-primary focus-visible:shadow-none"
           />
         </div>
       </>
     );
   };
+
+  const ContactTextArea = ({ row, placeholder, name, value, onChange }) => {
+    return (
+      <>
+        <div className="mb-6">
+          <textarea
+            rows={row}
+            placeholder={placeholder}
+            name={name}
+            value={value}
+            onChange={onChange}
+            className="border-[f0f0f0] w-full resize-none rounded border py-3 px-[14px] text-base text-body-color outline-none focus.border-primary focus-visible:shadow-none"
+          />
+        </div>
+      </>
+    );
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    try {
+      // Send the form data to your server's API endpoint
+      const response = await axios.post(
+        "http://localhost:3001/api/contact",
+        formData
+      );
+
+      // Handle the response (e.g., show a success message to the user)
+      console.log("Form data sent successfully:", response.data);
+
+      // Clear the form after successful submission
+      setFormData({
+        name: "",
+        email: "",
+        phone: "",
+        message: "",
+      });
+    } catch (error) {
+      // Handle errors (e.g., show an error message to the user)
+      console.error("Error sending form data:", error);
+    }
+  };
+
+ const handleChange = (e) => {
+  const { name, value } = e.target;
+  console.log(`Changing ${name} to ${value}`);
+  setFormData({
+    ...formData,
+    [name]: value,
+  });
+};
+
   return (
     <>
       <div className="container">
@@ -117,28 +164,36 @@ function ContactUs() {
           </div>
           <div className="w-full px-4 lg:w-1/2 xl:w-5/12">
             <div className="relative p-8 bg-base-100 rounded-lg shadow-lg sm:p-12">
-              <form>
+              <form onSubmit={handleSubmit}>
                 <ContactInputBox
                   type="text"
                   name="name"
                   placeholder="Your Name"
+                  value={formData.name}
+                  onChange={handleChange}
                 />
                 <ContactInputBox
-                  type="text"
+                  type="email"
                   name="email"
                   placeholder="Your Email"
+                  value={formData.email}
+                  onChange={handleChange}
                 />
                 <ContactInputBox
                   type="text"
                   name="phone"
                   placeholder="Your Phone"
+                  value={formData.phone}
+                  onChange={handleChange}
                 />
                 <ContactTextArea
                   row="6"
                   placeholder="Your Message"
-                  name="details"
-                  defaultValue=""
+                  name="message"
+                  value={formData.message}
+                  onChange={handleChange}
                 />
+
                 <div>
                   <button
                     type="submit"

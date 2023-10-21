@@ -17,7 +17,7 @@ const AdMailTable = () => {
           <div className="navbar-end mt-3 lg:ml-80 sm:ml-0">
             {/* QUOTE*/}
             <NavLink
-              to="quote"
+              to="createAd"
               className="btn btn-outline btn-success btn-md ml-4 text-capitalize"
             >
               Create a Advertisement

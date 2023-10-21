@@ -13,9 +13,14 @@ const UserContactsTable = () => {
           </div>
           <div className="flex justify-between items-center mx-3 -mt-7 mb-3">
             <div className="flex justify-end">
-              <h3>Search</h3>
+              <input
+                type="text"
+                placeholder="Search"
+                className="border border-gray-300 px-3 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
+              />
             </div>
           </div>
+
           <div className="mt-6">
             <table className="table">
               {/* head */}

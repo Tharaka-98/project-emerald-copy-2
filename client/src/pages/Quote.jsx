@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useState } from 'react';
 import { useLoaderData } from "react-router-dom";
 import { services } from "../data";
+import axios from 'axios'; // Import axios
 
 export const loader = () => {
   return { services };
@@ -8,6 +9,56 @@ export const loader = () => {
 
 function Quote() {
   const { services } = useLoaderData();
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    phone: '',
+    details: '',
+    services: [],
+  });
+
+  const handleFormSubmit = async (e) => {
+    e.preventDefault(); // Prevent the default form submission behavior
+
+    try {
+      const response = await axios.post('http://localhost:3001/api/submit-quote', formData);
+      if (response.status === 200) {
+        alert('Quote submitted successfully');
+        // You can reset the form or redirect the user here
+      } else {
+        alert('Failed to submit the quote');
+      }
+    } catch (error) {
+      console.error(error);
+      alert('An error occurred while submitting the quote');
+    }
+  };
+
+  const handleServiceChange = (e) => {
+    const { name, checked } = e.target;
+
+    // Using ...prevData to update the services array in the form data
+    setFormData((prevData) => {
+      if (checked) {
+        // If the checkbox is checked, add the service to the array
+        return { ...prevData, services: [...prevData.services, name] };
+      } else {
+        // If the checkbox is unchecked, remove the service from the array
+        return { ...prevData, services: prevData.services.filter((service) => service !== name) };
+      }
+    });
+  };
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
+  };
+
+
   const ContactTextArea = ({ row, placeholder, name, defaultValue }) => {
     return (
       <>
@@ -48,34 +99,42 @@ function Quote() {
         <div className="flex flex-wrap -mx-4 lg:justify-between">
           <div className="w-full px-4 lg:w-1/2 xl:w-6/12">
             <div className="relative p-8 bg-base-100 rounded-lg shadow-lg sm:p-12 flex flex-col h-full">
-              <form className="flex-grow">
+              <form className="flex-grow" onSubmit={handleFormSubmit}>
                 <ContactInputBox
                   type="text"
                   name="name"
                   placeholder="Your Name"
+                  value={formData.name}
+                onChange={handleChange}
                 />
                 <ContactInputBox
                   type="text"
                   name="email"
                   placeholder="Your Email"
+                  value={formData.email}
+                onChange={handleChange}
                 />
                 <ContactInputBox
                   type="text"
                   name="phone"
                   placeholder="Your Phone"
+                  value={formData.phone}
+                onChange={handleChange}
                 />
                 <ContactTextArea
                   row="6"
                   placeholder="Your Message"
                   name="details"
                   defaultValue=""
+                  value={formData.details}
+                onChange={handleChange}
                 />
               </form>
             </div>
           </div>
           <div className="w-full px-4 lg:w-1/2 xl:w-6/12">
             <div className="mt-1 relative p-8 bg-base-100 rounded-lg shadow-lg sm:p-12 flex flex-col h-full">
-              <form  className="flex-grow">
+              <form  className="flex-grow" onSubmit={handleFormSubmit}>
                 <div className="my-3 border-[f0f0f0] w-full rounded border py-3 px-[14px] text-base text-body-color outline-none focus:border-primary focus-visible:shadow-none">
                   <fieldset>
                     <legend className="text- font-semibold leading-6 text-gray-900">
@@ -92,6 +151,7 @@ function Quote() {
                                 name={title}
                                 type="checkbox"
                                 className="h-4 w-4 rounded border-gray-300"
+                                onChange={handleServiceChange}
                               />
                             </div>
                             <div className="text-sm leading-6">

@@ -10,13 +10,12 @@ export const singleData = [
     id: 1,
     title: 'abc',
     subtitle: 'abc',
-    description: 'abc',
     contact: '123',
     image: service1,
     status: {
         active: false,
     },
-    text2: [
+    details: [
         {
           id: 1,
           dis: "Leaves and death plant remove",
@@ -47,13 +46,12 @@ export const singleData = [
     id: 2,
     title: 'def',
     subtitle: 'def',
-    description: 'def',
     contact: '123',
     image: service2,
     status: {
         active: true,
     },
-    text2: [
+    description: [
         {
           id: 1,
           dis: "Leaves and death plant remove",
@@ -84,13 +82,12 @@ export const singleData = [
     id: 3,
     title: 'ghi',
     subtitle: 'ghi',
-    description: 'ghi',
     contact: '123',
     image: service3,
     status: {
         active: true,
     },
-    text2: [
+    description: [
         {
           id: 1,
           dis: "Leaves and death plant remove",
@@ -121,13 +118,12 @@ export const singleData = [
     id: 4,
     title: 'jkl',
     subtitle: 'jkl',
-    description: 'jkl',
     contact: '123',
     image: service4,
     status: {
         active: true,
     },
-    text2: [
+    description: [
         {
           id: 1,
           dis: "Leaves and death plant remove",
@@ -158,13 +154,12 @@ export const singleData = [
     id: 5,
     title: 'mno',
     subtitle: 'mno',
-    description: 'mno',
     contact: '123',
     image: service5,
     status: {
         active: true,
     },
-    text2: [
+    description: [
         {
           id: 1,
           dis: "Leaves and death plant remove",
@@ -195,13 +190,12 @@ export const singleData = [
     id: 6,
     title: 'pqr',
     subtitle: 'pqr',
-    description: 'pqr',
     contact: '123',
     image: service6,
     status: {
         active: false,
     },
-    text2: [
+    description: [
         {
           id: 1,
           dis: "Leaves and death plant remove",
@@ -232,13 +226,12 @@ export const singleData = [
     id: 7,
     title: 'stu',
     subtitle: 'stu',
-    description: 'stu',
     contact: '123',
     image: service1,
     status: {
       active: true,
     },
-    text2: [
+    description: [
         {
           id: 1,
           dis: "Leaves and death plant remove",
