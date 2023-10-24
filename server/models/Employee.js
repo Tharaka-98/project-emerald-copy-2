@@ -1,7 +1,8 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
 // Define a schema for your Sign Employee model
-const UserSchema = new mongoose.Schema({
+const UserSchema = new mongoose.Schema(
+  {
     email: {
       type: String,
       required: true,
@@ -12,58 +13,76 @@ const UserSchema = new mongoose.Schema({
       required: true,
     },
     // Add any other user-related fields here (e.g., name, role, etc.)
-  });
-
+  },
+  {
+    timestamps: true, // This will add createdAt and updatedAt fields
+  }
+);
 
 // Define a schema for the ContactUs data
-const ContactSchema = new mongoose.Schema({
-  name: {
-    type: String,
-    required: true,
+const ContactSchema = new mongoose.Schema(
+  {
+    name: {
+      type: String,
+      required: true,
+    },
+    email: {
+      type: String,
+      required: true,
+    },
+    phone: {
+      type: String,
+    },
+    message: {
+      type: String,
+      required: true,
+    },
+    date: {
+      type: Date,
+      default: Date.now,
+    },
   },
-  email: {
-    type: String,
-    required: true,
-  },
-  phone: {
-    type: String,
-  },
-  message: {
-    type: String,
-    required: true,
-  },
-  date: {
-    type: Date,
-    default: Date.now,
-  },
-});
+  {
+    timestamps: true, // This will add createdAt and updatedAt fields
+  }
+);
 
 // Define a schema for your Quote model
-const QuoteSchema = new mongoose.Schema({
-    name : String,
-    email : String,
-    phone : String,
-    details : String,
+const QuoteSchema = new mongoose.Schema(
+  {
+    name: String,
+    email: String,
+    phone: String,
+    details: String,
     services: [String],
-});
+  },
+  {
+    timestamps: true, // This will add createdAt and updatedAt fields
+  }
+);
 
 // Define the Advertisement schema
-const AdvertisementSchema = new mongoose.Schema({
-  title: String,
-  subtitle: String,
-  phone: String,
-  details: String,
-  image: {
-    data: Buffer,
-    contentType: String,
+const AdvertisementSchema = new mongoose.Schema(
+  {
+    title: String,
+    subtitle: String,
+    phone: String,
+    details: String,
+    image: {
+      data: Buffer,
+      contentType: String,
+    },
+    isActive: { type: Boolean, default: true }, // Define isActive as a Boolean with a default value
   },
-  isActive: { type: Boolean, default: true }, // Define isActive as a Boolean with a default value
-});
+  {
+    timestamps: true, // This will add createdAt and updatedAt fields
+  }
+);
 
 // Create a model based on the schema
-const UserModel = mongoose.model('user', UserSchema);
-const ContactModel = mongoose.model('contacts', ContactSchema);
-const QuoteModel = mongoose.model('quotes', QuoteSchema);
-const AdModel = mongoose.model('advertisements', AdvertisementSchema);
+const UserModel = mongoose.model("user", UserSchema);
+const ContactModel = mongoose.model("contacts", ContactSchema);
+const QuoteModel = mongoose.model("quotes", QuoteSchema);
+const AdModel = mongoose.model("advertisements", AdvertisementSchema);
 
-module.exports = {UserModel, ContactModel, QuoteModel, AdModel};
+module.exports = { UserModel, ContactModel, QuoteModel, AdModel };

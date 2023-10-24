@@ -1,110 +1,72 @@
-import React, { useState } from "react";
-import axios from "axios";
+import React, {useState} from 'react'
+import axios from 'axios';
 
-function CreateAd() {
-  const [image, setImage] = useState(null);
-  const [message, setMessage] = useState();
-  const [formData, setFormData] = useState({
-    title: "",
-    subtitle: "",
-    phone: "",
-    details: "",
-    image: null,
-  });
 
-  const handleImageChange = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      setImage(file);
-    }
-  };
-
-  const handleImageRemove = () => {
-    setImage(null); // Clear the image state
-  };
-
-  const handleInputChange = (e) => {
-    // setFormData((prev) => {
-    //   let helper = {...prev}
-    //   helper[`${e.target.name}`] = e.target.value
-
-    //   return helper;
-    // })
-    const { name, value } = e.target;
-    setFormData({
-      ...formData,
-      [name]: value,
+const SendMail = () => {
+    const [notification, setNotification] = useState('')
+    const [formData, setFormData] = useState({
+        recipient: [],
+        subject: '',
+        message: '',
     });
-  };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
 
-    const formDataToSend = new FormData();
-    formDataToSend.append("title", formData.title);
-    formDataToSend.append("subtitle", formData.subtitle);
-    formDataToSend.append("phone", formData.phone);
-    formDataToSend.append("details", formData.details);
-    formDataToSend.append("image", image, image.name);
-
-    try {
-      // Make a POST request to your backend endpoint with the form data
-      const response = await axios.post(
-        "http://localhost:3001/api/createAd",
-        formDataToSend
-      );
-
-      // Handle the response from the server as needed
-      console.log("Advertisement created:", response.data);
-
-      // Optionally, clear the form fields and image
-      setFormData({
-        title: "",
-        subtitle: "",
-        phone: "",
-        description: "",
-        details: "",
-        image: null,
-      });
-      setImage(null);
-      setMessage("Your Add Submitted, Thank you!");
-      // Clear the file input by resetting its value
-      document.getElementById("image").value = "";
-    } catch (error) {
-      // Handle any errors that occur during the request
-      console.error("Error :", error);
+    const handleInputChange = (e) => {
+        const {name, value} = e.target
+        setFormData({...formData, [name]: value,})
     }
-  };
 
-  const ContactTextArea = ({ row, placeholder, name, value, onChange }) => {
-    return (
-      <div className="mb-6">
-        <textarea
-          rows={row}
-          placeholder={placeholder}
-          name={name}
-          // value={value}
-          // onChange={onChange}
-          className="border-[f0f0f0] w-full resize-none rounded border py-3 px-[14px] text-base text-body-color outline-none focus:border-primary focus-visible:shadow-none"
-        />
-      </div>
-    );
-  };
+    const handleSubmit = async (e) => {
+        e.preventDefault()
+        try {
+            // Make a POST request to submit the form data
+            const response = await axios.post('http://localhost:3001/api/sendMail', formData);
+            // Clear the form data
+            setFormData({
+                recipient: '',
+                subject: '',
+                message: '',
+            });
+            console.log(formData.recipient, formData.subject, formData.message)
+            setNotification("Email Sent Successfully");
+            // Handle the response as needed (e.g., show a success message)
+            console.log('Email sent successfully:' ,response.data );
+        }
+        catch (error) {
+            // Handle errors (e.g., display an error message)
+            console.error("Error submitting the form:", error);
+        }
+    }
 
-  const ContactInputBox = ({ type, placeholder, name, value, onChange }) => {
-    return (
-      <div className="mb-6">
-        <input
-          type={type}
-          placeholder={placeholder}
-          name={name}
-          value={value}
-          onChange={onChange}
-          className="border-[f0f0f0] w-full rounded border py-3 px-[14px] text-base text-body-color outline-none focus:border-primary focus-visible:shadow-none"
-        />
-      </div>
-    );
-  };
+    const ContactTextArea = ({ row, placeholder, name, value, onChange }) => {
+        return (
+          <div className="mb-6">
+            <textarea
+              rows={row}
+              placeholder={placeholder}
+              name={name}
+              value={value}
+              onChange={onChange}
+              className="border-[f0f0f0] w-full resize-none rounded border py-3 px-[14px] text-base text-body-color outline-none focus:border-primary focus-visible:shadow-none"
+            />
+          </div>
+        );
+      };
+    
+      const ContactInputBox = ({ type, placeholder, name, value, onChange }) => {
+        return (
+          <div className="mb-6">
+            <input
+              type={type}
+              placeholder={placeholder}
+              name={name}
+              value={value}
+              onChange={onChange}
+              className="border-[f0f0f0] w-full rounded border py-3 px-[14px] text-base text-body-color outline-none focus:border-primary focus-visible:shadow-none"
+            />
+          </div>
+        );
+      };
 
   return (
     <>
@@ -113,11 +75,10 @@ function CreateAd() {
           <div className="w-full px-4 lg:w-1/2 xl:w-6/12">
             <div className="mb-12 max-w-[570px] lg:mb-0">
               <h2 className="mb-6 text-[32px] text-success font-bold uppercase text-dark sm:text-[40px] lg:text-[36px] xl:text-[40px]">
-                Create Your Advertisement
+                Send Your Message
               </h2>
               <p className="text-base leading-relaxed mb-9 text-body-color">
-                Welcome to the "Create Advertisement" page. This is where you
-                can showcase your products or services to a wider audience.
+                Contact your Customer as you wish
               </p>
 
               {/* <div className="mb-8 flex w-full max-w-[370px]">
@@ -168,36 +129,38 @@ function CreateAd() {
                 /> */}
                 <input
                   type="text"
-                  name="title"
-                  placeholder="Advertisement Title"
-                  value={formData.title}
+                  name="subject"
+                  placeholder="E-mail Subject"
+                  value={formData.subject}
                   onChange={handleInputChange}
                   className="my-3 border-[f0f0f0] w-full rounded border py-3 px-[14px] text-base text-body-color outline-none focus:border-primary focus-visible:shadow-none"
+                  required
                 />
 
                 <input
                   type="text"
-                  name="subtitle"
-                  placeholder="Add Advertisement Subtitle"
-                  value={formData.subtitle}
+                  name="recipient"
+                  placeholder="Add Your Recipient"
+                  value={formData.recipient}
                   onChange={handleInputChange}
                   className="my-3 border-[f0f0f0] w-full rounded border py-3 px-[14px] text-base text-body-color outline-none focus:border-primary focus-visible:shadow-none"
+                  required
                 />
 
-                <input
+                {/* <input
                   type="text"
-                  name="phone"
-                  placeholder="Your Phone"
-                  value={formData.phone}
+                  name="message"
+                  placeholder="Add Your Message"
+                  value={formData.message}
                   onChange={handleInputChange}
                   className="my-3 border-[f0f0f0] w-full rounded border py-3 px-[14px] text-base text-body-color outline-none focus:border-primary focus-visible:shadow-none"
-                />
+                /> */}
 
                 <textarea
                   rows="6"
-                  placeholder="Description"
-                  name="details"
-                  value={formData.details}
+                  name="message"
+                  placeholder="Add Your Message"
+                  value={formData.message}
                   onChange={handleInputChange}
                   className="my-3 border-[f0f0f0] w-full resize-none rounded border py-3 px-[14px] text-base text-body-color outline-none focus:border-primary focus-visible:shadow-none"
                 />
@@ -208,36 +171,8 @@ function CreateAd() {
                   value={formData.details}
                   onChange={handleInputChange}
                 /> */}
-                <div className="mb-6">
-                  <label htmlFor="image" className="text-base text-body-color">
-                    Advertisement Image:
-                  </label>
-                  <input
-                    type="file"
-                    id="image"
-                    name="image"
-                    accept="image/*"
-                    onChange={handleImageChange}
-                    className="border-[f0f0f0] w-full rounded border py-3 px-[14px] text-base text-body-color outline-none focus:border-primary focus-visible:shadow-none"
-                  />
-                </div>
-                {image && (
-                  <div className="mb-6">
-                    <img
-                      src={URL.createObjectURL(image)}
-                      alt="Selected Image"
-                      className="max-w-full h-auto"
-                    />
-                    <button
-                      type="button"
-                      onClick={handleImageRemove}
-                      className="text-red-500 hover:text-red-700 cursor-pointer mt-2"
-                    >
-                      Remove
-                    </button>
-                  </div>
-                )}
-                <p className="text-[#065f46]">{message}</p>
+                 {notification !== '' && <p className="text-[#065f46]">{notification}.</p>}
+                {/* <p className="text-[#065f46]">{notification}</p> */}
                 <div>
                   <button
                     type="submit"
@@ -250,7 +185,7 @@ function CreateAd() {
                     //   disabled === 'submitted'
                     // }
                   >
-                    Create Advertisement
+                    Send Your Email
                   </button>
                 </div>
               </form>
@@ -259,7 +194,7 @@ function CreateAd() {
         </div>
       </div>
     </>
-  );
+  )
 }
 
-export default CreateAd;
+export default SendMail

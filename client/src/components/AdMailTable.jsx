@@ -2,8 +2,6 @@ import React from "react";
 import AdTableRow from "./AdTableRow";
 import { NavLink } from "react-router-dom";
 
-
-
 const AdMailTable = () => {
   
   return (

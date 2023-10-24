@@ -18,7 +18,8 @@ import {
   SingleAd,
   UserContacts,
   Quotations,
-  CreateAd
+  CreateAd,
+  SendMail,
 } from "./pages";
 
 import { loader as landingLoader } from "./pages/Landing";
@@ -109,6 +110,10 @@ const router = createBrowserRouter([
       {
         path: "advertisement/createAd",
         element: <CreateAd />,
+      },
+      {
+        path: "email/sendMail",
+        element: <SendMail />,
       }
     ],
   },

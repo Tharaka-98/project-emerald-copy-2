@@ -5,6 +5,8 @@ const bodyParser = require("body-parser");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 const multer = require('multer');
+const nodemailer = require('nodemailer');
+require('dotenv').config();
 
 const { UserModel, ContactModel, QuoteModel, AdModel } = require("./models/Employee");
 
@@ -31,6 +33,15 @@ mongoose
  // Set up storage for multer
 const storage = multer.memoryStorage();
 const upload = multer({ storage: storage }); 
+
+// Nodemailer configuration
+const transporter = nodemailer.createTransport({
+  service: 'Gmail',
+  auth: {
+    user: 'polgasa1dmx@gmail.com',
+    pass: 'smwj xsgp ceka ixbu',
+  }
+})
 
 const secretKey = "your-secret-key";
 
@@ -239,6 +250,36 @@ app.delete('/api/deleteAd/:id', async (req, res) => {
     res.status(500).json({ message: 'Error deleting advertisement' });
   }
 });
+
+// Send email route
+app.post('/api/sendMail', async (req, res) => {
+  const {subject, recipient, message} = req.body;
+  console.log(req.body)
+  try {
+    // Email data sending logic using Nodemailer
+    const mailOptions = {
+      from: 'polgasa1dmx@gmail.com',
+      to: recipient,
+      subject: subject,
+      text: message,
+    }
+
+    // Send the email
+    transporter.sendMail(mailOptions, (error, result) => {
+      if (error) {
+        console.error("Error sending email: ",error);
+        res.status(500).json({error: 'Email sending failed'});
+      } else {
+        console.log("Email sent successfully", result.response);
+        res.status(200).json({message: 'Email sent successfully'});
+      }
+    })
+  } 
+  catch (error) {
+    console.error("Error sending email: ",error);
+    res.status(500).json({ error: 'Email sending failed'})
+  }
+})
 
 // Start the server
 const port = process.env.PORT || 3001;
