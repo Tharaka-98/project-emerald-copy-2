@@ -95,8 +95,8 @@ function Quote() {
     {
       /*
       const { name, value } = e.target;
-      setFormData((prevData) => ({
-      ...prevData,
+      setFormData((formData) => ({
+      ...formData,
       [name]: value,
     }));
   */
